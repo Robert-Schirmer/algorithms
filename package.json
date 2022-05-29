@@ -1,0 +1,11 @@
+{
+  "name": "algorithms",
+  "version": "1.0.0",
+  "description": "Random algorithms with Node v18 test runner",
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "Robert Schirmer",
+  "license": "ISC",
+  "type": "module"
+}
