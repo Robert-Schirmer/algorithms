@@ -6,27 +6,41 @@ class Assert {
   }
 
   static arrayEqual(a, b) {
-    const throwNotEqualError = () => {
-      throw new AssertionError(`[${a}] is not equal to [${b}]`);
-    };
-
-    if (a === b) return;
-    if (a == null || b == null) {
-      throwNotEqualError();
-    }
-    if (a.length !== b.length) {
-      throwNotEqualError();
-    }
+    this._arraySizesEqual();
 
     a.sort();
     b.sort();
 
     for (let index = 0; index < a.length; index++) {
       if (a[index] !== b[index]) {
-        throwNotEqualError();
+        this._throwArrayNotEqualError(a, b);
       }
     }
   }
+
+  static arrayOrderEqual(a, b) {
+    this._arraySizesEqual();
+
+    for (let index = 0; index < a.length; index++) {
+      if (a[index] !== b[index]) {
+        this._throwArrayNotEqualError(a, b);
+      }
+    }
+  }
+
+  static _arraySizesEqual(a, b) {
+    if (a === b) return;
+    if (a == null || b == null) {
+      this._throwArrayNotEqualError(a, b);
+    }
+    if (a.length !== b.length) {
+      this._throwArrayNotEqualError(a, b);
+    }
+  }
+
+  static _throwArrayNotEqualError = (a, b) => {
+    throw new AssertionError(`[${a}] is not equal to [${b}]`);
+  };
 }
 
 export default Assert;
