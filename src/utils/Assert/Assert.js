@@ -6,7 +6,7 @@ class Assert {
   }
 
   static arrayEqual(a, b) {
-    this._arraySizesEqual();
+    this._arrayPropertiesEqual(a, b);
 
     a.sort();
     b.sort();
@@ -19,7 +19,7 @@ class Assert {
   }
 
   static arrayOrderEqual(a, b) {
-    this._arraySizesEqual();
+    this._arrayPropertiesEqual(a, b);
 
     for (let index = 0; index < a.length; index++) {
       if (a[index] !== b[index]) {
@@ -28,8 +28,7 @@ class Assert {
     }
   }
 
-  static _arraySizesEqual(a, b) {
-    if (a === b) return;
+  static _arrayPropertiesEqual(a, b) {
     if (a == null || b == null) {
       this._throwArrayNotEqualError(a, b);
     }
