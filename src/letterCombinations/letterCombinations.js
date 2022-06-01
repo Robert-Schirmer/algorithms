@@ -25,31 +25,30 @@ const letterCombinations = (digits) => {
   });
   const combinations = new Array(numOfcombinations);
 
+  const bumpDigitLetterIndex = (digitIndex) => {
+    if (digitLetterOptionsIndex[digitIndex].currentLetterIndex === digitLetterOptionsIndex[digitIndex].maxIndex) {
+      // Reset to 0
+      digitLetterOptionsIndex[digitIndex].currentLetterIndex = 0;
+      // Bump the higher up digitIndex
+      bumpDigitLetterIndex(digitIndex - 1);
+    } else {
+      digitLetterOptionsIndex[digitIndex].currentLetterIndex += 1;
+    }
+  };
+
   for (let combinationsIndex = 0; combinationsIndex < combinations.length; combinationsIndex++) {
     combinations[combinationsIndex] = digitsArray
       .map((digit, digitIndex) => {
         const letterOptions = phoneNumberLetterMap[digit];
         const currentLetterIndex = digitLetterOptionsIndex[digitIndex].currentLetterIndex;
         const returnLetter = letterOptions[currentLetterIndex];
-
-        if (combinationsIndex !== combinations.length - 1 && digitIndex === digitsArray.length - 1) {
-          const bumpDigitLetterIndex = (digitIndex) => {
-            if (digitLetterOptionsIndex[digitIndex].currentLetterIndex === digitLetterOptionsIndex[digitIndex].maxIndex) {
-              // Reset to 0
-              digitLetterOptionsIndex[digitIndex].currentLetterIndex = 0;
-              // Bump the higher up digitIndex
-              bumpDigitLetterIndex(digitIndex - 1);
-            } else {
-              digitLetterOptionsIndex[digitIndex].currentLetterIndex += 1;
-            }
-          };
-
-          bumpDigitLetterIndex(digitIndex);
-        }
-
         return returnLetter;
       })
       .join("");
+
+    if (combinationsIndex !== combinations.length - 1) {
+      bumpDigitLetterIndex(digitsArray.length - 1);
+    }
   }
 
   return combinations;
