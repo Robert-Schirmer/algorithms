@@ -19,9 +19,11 @@ const letterCombinations = (digits) => {
 
   const digitsArray = digits.split("");
   let numOfcombinations = 1;
-  const digitLetterOptionsIndex = digitsArray.map((digit) => {
+  const digitLetterOptionsIndex = digitsArray.map((digit, index) => {
     numOfcombinations *= phoneNumberLetterMap[digit].length;
-    return { currentLetterIndex: 0, maxIndex: phoneNumberLetterMap[digit].length - 1 };
+    // If last digit index, set to -1 so first bump of indexes sets it to 0
+    const currentLetterIndex = index === digitsArray.length - 1 ? -1 : 0;
+    return { currentLetterIndex, maxIndex: phoneNumberLetterMap[digit].length - 1 };
   });
   const combinations = new Array(numOfcombinations);
 
@@ -37,18 +39,15 @@ const letterCombinations = (digits) => {
   };
 
   for (let combinationsIndex = 0; combinationsIndex < combinations.length; combinationsIndex++) {
+    bumpDigitLetterIndex(digitsArray.length - 1);
+
     combinations[combinationsIndex] = digitsArray
       .map((digit, digitIndex) => {
         const letterOptions = phoneNumberLetterMap[digit];
         const currentLetterIndex = digitLetterOptionsIndex[digitIndex].currentLetterIndex;
-        const returnLetter = letterOptions[currentLetterIndex];
-        return returnLetter;
+        return letterOptions[currentLetterIndex];
       })
       .join("");
-
-    if (combinationsIndex !== combinations.length - 1) {
-      bumpDigitLetterIndex(digitsArray.length - 1);
-    }
   }
 
   return combinations;
